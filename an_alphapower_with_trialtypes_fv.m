@@ -8,7 +8,12 @@ clearvars -except data bl1Trialtype
 
 % load the data file; (imp : change this if the path changes);
 
-load('C:\Users\RayLabCNS\Documents\MATLAB\Ankan_M\Recorded Data\ButterflyProjectRawData\BiofeedbackData_Rishi_211216\biofeedback_211216rishifirst2.mat');
+% prompt = 'Please enter the subject name : ';
+% subjectname = input(prompt,'s');
+% prompt = 'Load the combined subjects data file for the selected subejct ';
+% load(uigetfile(prompt,'s'));
+% load('C:\Users\RayLabCNS\Documents\MATLAB\Ankan_M\Biofeedback\A_ProjectRawData\3VI\BiofeedbackData_Rishi_211216\biofeedback_211216rishifirst2.mat');
+load('C:\Users\RayLabCNS\Documents\MATLAB\Ankan_M\Biofeedback\A_ProjectRawData\2IS\Combined_session_data\biofeedback_S03.mat')
 
 % %% We would define a matix setfreqdata 
 % We would define a matix alphapowerdata
@@ -25,21 +30,25 @@ alphaIndData   = [];
 
 %% Getting specified indices which meets a trial condion.
 
-constant = find(bl1Trialtype==0);
-alpahdep = find(bl1Trialtype==1);
-alphaind = find(bl1Trialtype==2);
+% defining zero for the constant tone    (25% of the total trials),
+% defining one for the dependent tone   (50% of the total trials),
+% defining two for the independent tone (25% of the total trial)
+
+constant = find(sub_trialtypes == 0);
+alpahdep = find(sub_trialtypes == 1);
+alphaind = find(sub_trialtypes == 2);
 
 % Next we would in for loop bring the data in it:
 % have to change here to bring alphapowerdata from data
 % for that I have to know where alpha power is getting stored?
 
-%% strttime and the endtime of the eyesclose task performed by the subjects
-starttime = 11;
-endtime = 60;
+%% starttime and the endtime of the eyesclose task performed by the subjects
+starttime = 8;
+endtime = 57;
 
-for i=1:20 % for total of 20 trial, it it go to each of the cell within which each of the trial is located 
+for i=1:48 % for total of 20 trial, it it go to each of the cell within which each of the trial is located 
 %     rawalphapow = [];
-    rawAlphaPow = data{1,1}{2,i};
+    rawAlphaPow = sub_data{3,i}; % i would varie from first trial to last trial
     rawAlphaPow = rawAlphaPow*10;
     alphaPower = mean(rawAlphaPow(:,8:15),2)';
     alphaPowerAllTrial(i,:) = alphaPower(starttime:endtime); % and would keep inside the alphaPowerAllTrial   
@@ -88,8 +97,8 @@ avgtime_alpaDepData = mean(avgacr_trials_alpaDepData(:));   std_alpaDepData  = (
 %% creating x and y axis for the final plot
 trialtypes = 1:3;  % x axis
 avgsetfreq = [avgtime_consData,avgtime_alphaIndData,avgtime_alpaDepData];
-error_upper      = [0,0,std_alpaDepData];
-error_lower      = [std_ConsData,std_alphaIndData,0];
+error_upper      = [std_ConsData,std_alphaIndData,std_alpaDepData];
+error_lower      = [std_ConsData,std_alphaIndData,std_alpaDepData];
 
 %% plotting
 bar(trialtypes,avgsetfreq); hold on

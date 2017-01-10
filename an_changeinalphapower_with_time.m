@@ -8,7 +8,8 @@ clearvars -except data bl1Trialtype;
 
 % load the data file; (imp : change this if the path changes);
 
-load('C:\Users\RayLabCNS\Documents\MATLAB\Ankan_M\Recorded Data\ButterflyProjectRawData\BiofeedbackData_Rishi_211216\biofeedback_211216rishifirst2.mat');
+% load('C:\Users\RayLabCNS\Documents\MATLAB\Ankan_M\Recorded Data\ButterflyProjectRawData\BiofeedbackData_Rishi_211216\biofeedback_211216rishifirst2.mat');
+load('C:\Users\RayLabCNS\Documents\MATLAB\Ankan_M\Biofeedback\A_ProjectRawData\2IS\Combined_session_data\biofeedback_S03.mat');
 
 % %% We would define a matix setfreqdata 
 % We would define a matix alphapowerdata
@@ -25,21 +26,21 @@ load('C:\Users\RayLabCNS\Documents\MATLAB\Ankan_M\Recorded Data\ButterflyProject
 
 %% Getting specified indices which meets a trial condion.
 
-constant = find(bl1Trialtype==0);
-alpahdep = find(bl1Trialtype==1);
-alphaind = find(bl1Trialtype==2);
+constant = find(sub_trialtypes == 0);
+alpahdep = find(sub_trialtypes == 1);
+alphaind = find(sub_trialtypes == 2);
 
 % Next we would in for loop bring the data in it:
 % have to change here to bring alphapowerdata from data
 % $ for that I have to knwo where alpha power is getting stored?
-starttime = 11;
-endtime = 60;
+starttime = 8;
+endtime = 57;
 
 %% Extracting alphapower from the recorded data:
 
-for i=1:20
+for i=1:48
 %     rawalphapow = [];
-    rawAlphaPow = data{1,1}{2,i};
+    rawAlphaPow = sub_data{3,i};
     rawAlphaPow = rawAlphaPow*10;
     alphaPower = mean(rawAlphaPow(:,8:15),2)';
     alphaPowerAllTrial(i,:) = alphaPower(starttime:endtime);    
@@ -81,15 +82,15 @@ end
 % avgacr_trials_alphaIndData = mean(alphaIndData,1);
 
 % average across timeperiods 
-avgtime_consData = mean(consData,1)';          stderr_ConsData     = (std(consData))/sqrt(4);    
-avgtime_alpaDepData = mean(alpahDepData,1)';   stderr_alpaDepData  = (std(alpahDepData))/sqrt(8);
-avgtime_alphaIndData = mean(alphaIndData,1)';  stderr_alphaIndData = (std(alphaIndData))/sqrt(4);
-average_alphaPowerAllTrials = mean(alphaPowerAllTrial,1); stderr_alphaPowerAllTrial = (std(alphaPowerAllTrial))/sqrt(16);
+avgtime_consData = mean(consData,1)';          stderr_ConsData     = (std(consData))/sqrt(12);    
+avgtime_alpaDepData = mean(alpahDepData,1)';   stderr_alpaDepData  = (std(alpahDepData))/sqrt(24);
+avgtime_alphaIndData = mean(alphaIndData,1)';  stderr_alphaIndData = (std(alphaIndData))/sqrt(12);
+average_alphaPowerAllTrials = mean(alphaPowerAllTrial,1); stderr_alphaPowerAllTrial = (std(alphaPowerAllTrial))/sqrt(48);
 
 % acculmulating the datas in one single array;
 % in the order : constand dependent independent
 
-timepoint = 1:50;  % x axis
+timepoint = 1:50;  % x axis total time duration of the experiment
 % constrailno = [1,2,3,4];
 % deptrailano = [1,2,3,4,5,6,7,8];
 % indtraialno = [1,2,3,4];
